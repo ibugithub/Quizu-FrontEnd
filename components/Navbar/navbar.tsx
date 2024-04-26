@@ -5,6 +5,7 @@ import logoImage from "../../assets/logo.jpg";
 import Image from "next/image";
 import { useAppSelector, useAppDispatch } from "@/lib/hooks";
 import { login } from "@/lib/features/auth/authSlice";
+import Link from "next/link";
 
 export const Navbar = () => {
   const dispatch = useAppDispatch();
@@ -23,9 +24,6 @@ export const Navbar = () => {
     }
   }, [dispatch]);
 
-  const handleNavigationClick = () => {
-    setIsLoading(true);
-  }
 
   if (isLoading) {
     return <div className=" bg-white absolute top-0 left-0 right-0 h-[72px] flex justify-center"><span className="mt-[1.4rem]">Loading...</span></div>
@@ -35,47 +33,43 @@ export const Navbar = () => {
       <div className="navbar-items justify-between">
         <div className="left-nav-items flex">
           <Image src={logoImage} alt="Logo" className="logo-image" />
-          <a href="/" className="logo-text" onClick={handleNavigationClick}>
-            Springo
-          </a>
+          <Link href="/" className="logo-text">
+            Quizu
+          </Link>
         </div>
         <div className=" mr-2 hidden sm:flex">
-          <a
+          <Link
             href="/quiz"
             className="navbar-item"
-            onClick={handleNavigationClick}
           >
             Quiz
-          </a>
+          </Link>
 
-          <a
+          <Link
             href="/about"
             className="navbar-item"
-            onClick={handleNavigationClick}
           >
             About
-          </a>
+          </Link>
 
           {isAuthenticated ? (
             <>
-              <a
+              <Link
                 href="/profile"
                 className="navbar-item"
                 aria-haspopup="true"
-                onClick={handleNavigationClick}
               >
                 Profile
-              </a>
+              </Link>
             </>
           ) : (
-            <a
+            <Link
               href="/signin"
               className="navbar-item"
               aria-haspopup="true"
-              onClick={handleNavigationClick}
             >
               Sign in
-            </a>
+            </Link>
           )}
         </div>
         <div
@@ -86,58 +80,38 @@ export const Navbar = () => {
           {navClick ? (
             <div className="flex p-2 justify-between bg-white text-gray-800">
               <div className="flex relative gap-2  flex-col z-50">
-                <a
+                <Link
                   href="/stories"
                   className="navbar-item"
-                  onClick={handleNavigationClick}
                 >
-                  Story
-                </a>
+                  Quiz
+                </Link>
 
-                <a
-                  href="/checklist"
-                  className="navbar-item"
-                  onClick={handleNavigationClick}
-                >
-                  CheckList
-                </a>
-
-                <a
-                  href="/audience"
-                  className="navbar-item"
-                  onClick={handleNavigationClick}
-                >
-                  Audience
-                </a>
-
-                <a
+                <Link
                   href="/about"
                   className="navbar-item"
-                  onClick={handleNavigationClick}
                 >
                   About
-                </a>
+                </Link>
 
                 {isAuthenticated ? (
                   <>
-                    <a
+                    <Link
                       href="/profile"
                       className="navbar-item"
                       aria-haspopup="true"
-                      onClick={handleNavigationClick}
                     >
                       Profile
-                    </a>
+                    </Link>
                   </>
                 ) : (
-                  <a
+                  <Link
                     href="/signin"
                     className="navbar-item"
                     aria-haspopup="true"
-                    onClick={handleNavigationClick}
                   >
                     Sign in
-                  </a>
+                  </Link>
                 )}
               </div>
               <svg

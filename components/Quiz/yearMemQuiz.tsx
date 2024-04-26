@@ -12,6 +12,7 @@ export const Quiz = () => {
   const [selectedAnswer, setSelectedAnswer] = useState<{ [questionId: number]: [number, boolean] | null }>({})
   const [submitted, setSubmitted] = useState(false)
   const [corrAnswer, setCorrAnswer] = useState(0)
+  const [isLoading, setIsLoading] = useState(true)
 
   console.log('the selectedAnswer is ', selectedAnswer)
   useEffect(() => {
@@ -21,14 +22,14 @@ export const Quiz = () => {
         const result = await axios.get(url)
         console.log('the result is ', result)
         setQuestions(result.data)
-
+        setIsLoading(false)
       } catch (err) {
         console.error("Error while fetching quiz at yearMemQuiz.tsx", err)
       }
     }
 
     fetchQuiz();
-  }, []);
+  }, [url]);
 
   const HandleAnswerClick = (questionId: number, answerId: number, isCorrect: boolean) => {
     setSelectedAnswer((prevAnswerId) => ({
@@ -40,10 +41,9 @@ export const Quiz = () => {
   const countCorrAnswers = () => {
     let corrAnswer = 0;
     for (let key in selectedAnswer) {
-      if(selectedAnswer[key]?.[1])
-        {
-          corrAnswer++;
-        }
+      if (selectedAnswer[key]?.[1]) {
+        corrAnswer++;
+      }
     }
     setCorrAnswer(corrAnswer)
   }
@@ -54,44 +54,53 @@ export const Quiz = () => {
   }
   return (
     <>
-      <div className="flex justify-end">
-        <div className="p-3 text-green-600">Results : {corrAnswer} out of 3</div>
-      </div>
+      {isLoading ? (
+        <>
+          <div className="flex items-center justify-center h-screen">
+            <div className="animate-spin rounded-full h-28 w-28 border-t-2 border-b-2 border-gray-900"></div>
+          </div>
+        </>
+      ) : (
+        <>
+          <div className="flex justify-end">
+            <div className="p-3 text-green-600">Results : {corrAnswer} out of 3</div>
+          </div>
 
-      <div className="flex justify-center">
-        <div className=" flex flex-col items-start gap-10">
-          {questions.map((question) => (
-            <div key={question.id}>
-              <div>{question.text}</div>
-              <div className="flex flex-col gap-3 mt-5">
-                {question.answers.map((answer) => (
+          <div className="flex justify-center">
+            <div className=" flex flex-col items-start gap-10">
+              {questions.map((question) => (
+                <div key={question.id}>
+                  <div>{question.text}</div>
+                  <div className="flex flex-col gap-3 mt-5">
+                    {question.answers.map((answer) => (
 
-                  <div key={answer.id} className="flex ">
-                    <div className="flex gap-2 justify-center items-center">
-                      <span onClick={() => HandleAnswerClick(question.id, answer.id, answer.is_correct)}>
-                        {selectedAnswer[question.id]?.[0] === answer.id ? (
-                          <MdCheckBox />
-                        ) : (
-                          <MdCheckBoxOutlineBlank />
-                        )}
-                      </span>
-                      {selectedAnswer[question.id]?.[0] === answer.id && submitted ? (
-                        <div className={`p-3 ${answer.is_correct ? 'bg-green-500' : 'bg-red-500'}`}>{answer.text}</div>
-                      ) : (
-                        <div className="p-3">{answer.text}</div>
-                      )}
-                    </div>
+                      <div key={answer.id} className="flex ">
+                        <div className="flex gap-2 justify-center items-center">
+                          <span onClick={() => HandleAnswerClick(question.id, answer.id, answer.is_correct)}>
+                            {selectedAnswer[question.id]?.[0] === answer.id ? (
+                              <MdCheckBox />
+                            ) : (
+                              <MdCheckBoxOutlineBlank />
+                            )}
+                          </span>
+                          {selectedAnswer[question.id]?.[0] === answer.id && submitted ? (
+                            <div className={`p-3 ${answer.is_correct ? 'bg-green-500' : 'bg-red-500'}`}>{answer.text}</div>
+                          ) : (
+                            <div className="p-3">{answer.text}</div>
+                          )}
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      </div>
-      <div className="flex justify-center my-10 ">
-        <button className="bg-green-500 py-3 px-7 text-white " onClick={HandleSubmit}>submit</button>
-      </div>
-
+          </div>
+          <div className="flex justify-center my-10 ">
+            <button className="bg-green-500 py-3 px-7 text-white " onClick={HandleSubmit}>submit</button>
+          </div>
+        </>
+      )}
     </>
   )
 }
