@@ -14,7 +14,6 @@ export const Quiz = () => {
   const [corrAnswer, setCorrAnswer] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
 
-  console.log('the selectedAnswer is ', selectedAnswer)
   useEffect(() => {
     const fetchQuiz = async () => {
 
@@ -52,6 +51,12 @@ export const Quiz = () => {
     setSubmitted(true);
     countCorrAnswers()
   }
+
+  const HandleStart = () => {
+    setSubmitted(false);
+    setCorrAnswer(0)
+    setSelectedAnswer([])
+  }
   return (
     <>
       {isLoading ? (
@@ -72,7 +77,7 @@ export const Quiz = () => {
                 <div key={question.id}>
                   <div>{question.text}</div>
                   <div className="flex flex-col gap-3 mt-5">
-                    {question.answers.map((answer) => (
+                    {question.answers.sort(() => Math.random() - 0.5).map((answer) => (
 
                       <div key={answer.id} className="flex ">
                         <div className="flex gap-2 justify-center items-center">
@@ -83,11 +88,14 @@ export const Quiz = () => {
                               <MdCheckBoxOutlineBlank />
                             )}
                           </span>
-                          {selectedAnswer[question.id]?.[0] === answer.id && submitted ? (
-                            <div className={`p-3 ${answer.is_correct ? 'bg-green-500' : 'bg-red-500'}`}>{answer.text}</div>
+                          {submitted ? (
+
+                            <div className={`p-3 ${answer.is_correct ? 'bg-green-500' : ''} ${selectedAnswer[question.id]?.[0] === answer.id && !answer.is_correct ? 'bg-red-500' : ''}`}>{answer.text}</div>
+
                           ) : (
                             <div className="p-3">{answer.text}</div>
                           )}
+
                         </div>
                       </div>
                     ))}
@@ -96,9 +104,15 @@ export const Quiz = () => {
               ))}
             </div>
           </div>
-          <div className="flex justify-center my-10 ">
-            <button className="bg-green-500 py-3 px-7 text-white " onClick={HandleSubmit}>submit</button>
-          </div>
+          {submitted ? (
+            <div className="flex justify-center my-10 ">
+              <button className="bg-blue-500 py-3 px-7 text-white " onClick={HandleStart}>Start Again</button>
+            </div >
+          ) : (
+            <div className="flex justify-center my-10 ">
+              <button className="bg-green-500 py-3 px-7 text-white " onClick={HandleSubmit}>Submit</button>
+            </div >
+          )}
         </>
       )}
     </>
