@@ -29,7 +29,7 @@ export const Navbar = () => {
     return <div className=" bg-white absolute top-0 left-0 right-0 h-[72px] flex justify-center"><span className="mt-[1.4rem]">Loading...</span></div>
   }
   return (
-    <nav className="navbar bg-white">
+    <nav className="navbar">
       <div className="navbar-items justify-between">
         <div className="left-nav-items flex">
           <Image src={logoImage} alt="Logo" className="logo-image" />
@@ -43,6 +43,13 @@ export const Navbar = () => {
             className="navbar-item"
           >
             Quiz
+          </Link>
+
+          <Link
+            href="/notes"
+            className="navbar-item"
+          >
+            Notes
           </Link>
 
           <Link
@@ -72,6 +79,7 @@ export const Navbar = () => {
             </Link>
           )}
         </div>
+        {/* nav in mobile */}
         <div
           className="bg-gray-900 inline-flex items-center justify-center p-2 rounded-md text-white  sm:hidden absolute right-2 top-[1rem]"
         >
@@ -85,6 +93,13 @@ export const Navbar = () => {
                   className="navbar-item"
                 >
                   Quiz
+                </Link>
+
+                <Link
+                  href="/notes"
+                  className="navbar-item"
+                >
+                  Notes
                 </Link>
 
                 <Link
@@ -156,6 +171,5 @@ export const Navbar = () => {
       </div>
     </nav>
   );
-
 
 };

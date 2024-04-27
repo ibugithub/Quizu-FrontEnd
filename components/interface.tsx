@@ -22,3 +22,8 @@ export interface Questions {
   text : string,
   answers : Answers[]
 }
+
+export interface NoteInterface {
+  id: number,
+  text: string,
+}

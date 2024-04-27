@@ -2,7 +2,7 @@ import React from 'react';
 
 export const Footer = () => {
   return (
-    <footer className="bg-white text-blue-950 py-4">
+    <footer className="footer py-4">
       <div className="container mx-auto px-4 flex flex-col items-center">
           <h3 className="text-lg font-semibold mb-2">Quizu</h3>
           <p className=" mb-4">A platform for sharing and discovering stories from around the world.</p>
